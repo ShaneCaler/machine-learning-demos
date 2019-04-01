@@ -22,8 +22,10 @@ Training Hyperparameters:
 - buffer_size: 4096
 - learning_rate: 2e-4
     
-Notes:
-
+Gifs:
+- <a href="https://imgur.com/a/jkmfgsz">500,000 steps into training</a> - the agent has started to learn how to pass through columns and has made it through a max of 4 in one attempt
+- <a href="https://imgur.com/a/TLDX14c">1,000,000 steps into training</a> - the agent has now made it through 16 columns in one attempt. Training is slow and the agent still fails early-on a lot of the time, but it does appear to be learning.
+- <a href="https://imgur.com/a/8DeO9b6">2,000,000 steps into training</a> - the agent has now made it through a max of 20 columns in one attempt, it seems that it hit a "wall" of sorts and stopped learning as quickly. While it is able to sometimes make it through many columns, I suspect it's more to due to luck of the random column placement. As seen in the gif, it would often jump when the best action would be to fall a little more
 
 ### Dependencies:
 - Unity ML-Agents 0.7.0
