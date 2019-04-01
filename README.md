@@ -17,10 +17,10 @@ Reward System:
 - Negative reward (-1f) for collided into floor, ceiling or a column
 
 Training Hyperparameters:
-    max_steps: 2000000
-    batch_size: 512
-    buffer_size: 4096
-    learning_rate: 2e-4
+- max_steps: 2000000
+- batch_size: 512
+- buffer_size: 4096
+- learning_rate: 2e-4
     
 Notes:
 
