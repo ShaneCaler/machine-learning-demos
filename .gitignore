@@ -6,6 +6,15 @@
 [Ll]ogs/
 Assets/Free Platform Game Assets/
 Assets/ML-Agents/Examples/
+Assets/Scripts/SnakeOld/
+Assets/Scripts/Wrangler
+Assets/Scripts/ShapeRunner
+Assets/Brains/Snake Agent Old/
+Assets/Brains/Wrangler Agents
+Assets/Brains/Shape Runner Agent/
+Assets/Prefabs/ShapeRunner/
+Assets/Scenes/CattleWranglerDualAgents
+Assets/Obi/
 
 # Never ignore Asset meta data
 ![Aa]ssets/**/*.meta
@@ -53,3 +62,19 @@ sysinfo.txt
 crashlytics-build.properties
 VR-racing-game/Assets/External Assets.meta
 VR-racing-game/Assets/Core/Brains/
+Assets/Scenes/New Scene.unity.meta
+Assets/Scenes/New Scene.unity
+Assets/Scenes/EndlessRunner.unity.meta
+Assets/Scenes/EndlessRunner.unity
+Assets/Scenes/CattleWrangerDualAgents.unity.meta
+Assets/Scenes/CattleWrangerDualAgents.unity
+Assets/Prefabs/ShapeRunner.meta
+Assets/Obi.meta
+Assets/Brains/Wrangler Agents.meta
+Assets/Brains/Shape Runner Agent.meta
+Assets/Scripts/Wrangler.meta
+Assets/Scripts/SnakeOld.meta
+Assets/Scripts/ShapeRunner.meta
+Assets/Scenes/SnakeAgentOld.unity.meta
+Assets/Scenes/SnakeAgentOld.unity
+Assets/Brains/Snake Agent Old.meta

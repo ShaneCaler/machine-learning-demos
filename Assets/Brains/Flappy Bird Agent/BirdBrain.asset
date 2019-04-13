@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: BirdBrain
   m_EditorClassIdentifier: 
   brainParameters:
-    vectorObservationSize: 39
-    numStackedVectorObservations: 2
+    vectorObservationSize: 44
+    numStackedVectorObservations: 3
     vectorActionSize: 02000000
     cameraResolutions: []
     vectorActionDescriptions:

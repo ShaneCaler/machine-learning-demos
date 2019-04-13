@@ -20,12 +20,13 @@ public class BirdAcademy : Academy
 
 	private float timeSinceLastSpawn;
 	private float spawnXPos = 10f;
+	private float reward = 0f;
 	private int currentColumnIndex = 0;
 	private Vector2 objectPoolPos = new Vector2(4f, -2f);
 	private GameObject[] columnPool;
 	private GoalObject[] goalObjects;
 	private ScrollingObject[] scrollingObjects;
-	private int score = 0;
+	private int currentScore, maxScore = 0;
 	private bool hasScored;
 
 	private void Start()
@@ -38,7 +39,6 @@ public class BirdAcademy : Academy
 		{
 			columnPool[i] = Instantiate(columnsPrefab, objectPoolPos, Quaternion.identity);
 			columnPool[i].name = "Column + " + i;
-			//goalObjects[i] = columnPool[i].GetComponentInChildren<GoalObject>().gameObject;
 		}
 	}
 
@@ -62,11 +62,15 @@ public class BirdAcademy : Academy
 	private void ResetEnvironment()
 	{
 		Debug.Log("Resetting environment");
-		score = 0;
-		scoreText.text = "Score: " + score;
+		if(currentScore > maxScore)
+		{
+			maxScore = currentScore;
+		}
+		currentScore = 0;
+		reward = 0;
+		scoreText.text = "Current Score: " + currentScore + " | Max Score: " + maxScore;
 		agent.transform.position = Vector2.zero;
 		agent.transform.rotation = new Quaternion(0, 0, 0, 0);
-		//DestroyColumns();
 		ResetColumns();
 		ResetScrollingObjects();
 	}
@@ -98,12 +102,6 @@ public class BirdAcademy : Academy
 
 	private void ResetColumns()
 	{
-		//GameObject[] columns = GameObject.FindGameObjectsWithTag("Column");
-		/*for (int i = 0; i < columns.Length; i++)
-		{
-			Destroy(columns[i]);
-		}*/
-
 		for (int i = 0; i < columnPool.Length; i++)
 		{
 			columnPool[i].transform.position = objectPoolPos;
@@ -115,9 +113,15 @@ public class BirdAcademy : Academy
 		if (!hasScored)
 		{
 			hasScored = true;
-			agent.AddReward(.75f);
-			score++;
-			scoreText.text = "Score: " + score;
+			 reward += .01f;
+			if(reward < .25f)
+			{
+				reward += .25f;
+			}
+			Monitor.Log("Reward for passing thru goal", reward.ToString("n6"));
+			agent.AddReward(reward);
+			currentScore++;
+			scoreText.text = "Current Score: " + currentScore + " | Max Score: " + maxScore;
 		}
 
 	}

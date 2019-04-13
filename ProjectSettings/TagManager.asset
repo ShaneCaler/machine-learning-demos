@@ -31,6 +31,17 @@ TagManager:
   - Column
   - Obstacle
   - PowerUp
+  - Cattle
+  - Cowboy
+  - GoalPost
+  - Sphere
+  - Cube
+  - Pyramid
+  - Rectangle
+  - VertRectObstacle
+  - HorizRectObstacle
+  - Apple
+  - Body
   layers:
   - Default
   - TransparentFX
@@ -46,9 +57,9 @@ TagManager:
   - goalie
   - strikerWall
   - striker
-  - 
-  - 
-  - 
+  - Cattle
+  - Cowboy
+  - GoalPost
   - 
   - 
   - 
@@ -65,11 +76,11 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Default
-    uniqueID: 0
-    locked: 0
   - name: Background
     uniqueID: 2307555
+    locked: 0
+  - name: Default
+    uniqueID: 0
     locked: 0
   - name: Midground
     uniqueID: 2271380901

@@ -59,41 +59,5 @@ namespace MLAgents
 
             return perceptionBuffer;
         }
-
-		public List<float> Perceive2(float rayDistance, Vector2 startOffset, Vector2 dirOffset, string[] detectableObjects)
-		{
-			perceptionBuffer2.Clear();
-			// For each ray sublist stores categorial information on detected object
-			// along with object distance.
-			if (Application.isEditor)
-			{
-				Debug.DrawRay(startOffset,
-					dirOffset, Color.black, 0.5f, true);
-			}
-
-			float[] subList = new float[detectableObjects.Length + 2];
-			RaycastHit2D hit = Physics2D.Raycast(startOffset, dirOffset, rayDistance);
-			if (hit.collider != null)
-			{
-				for (int i = 0; i < detectableObjects.Length; i++)
-				{
-					if (hit.collider.gameObject.CompareTag(detectableObjects[i]))
-					{
-						//Debug.Log("Adding " + hit.collider.gameObject.name + " to sublist");
-						subList[i] = 1f;
-						subList[detectableObjects.Length + 1] = Vector2.Distance(transform.position, hit.point);
-						break;
-					}
-				}
-			}
-			else
-			{
-				subList[detectableObjects.Length] = 1f;
-			}
-
-			perceptionBuffer2.AddRange(subList);
-
-			return perceptionBuffer2;
-		}
 	}
 }

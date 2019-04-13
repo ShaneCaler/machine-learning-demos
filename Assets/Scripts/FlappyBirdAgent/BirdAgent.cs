@@ -6,7 +6,6 @@ using MLAgents;
 public class BirdAgent : Agent
 {
 	public float jumpForce = 200f;
-	public bool isDead = false;
 	public BirdAcademy academy;
 
 	private Rigidbody2D rb;
@@ -35,8 +34,9 @@ public class BirdAgent : Agent
 
 	public override void CollectObservations()
 	{
-		float rayDistance = 100f;
+		float rayDistance = 75f;
 		string[] detectableObjects = { "Column", "goal", "Obstacle" };
+		string[] upDownObjects = { "Column" };
 
 		AddVectorObs(rayPer.Perceive(rayDistance, (Vector2)transform.position + new Vector2(.25f, 0f), Vector2.right + new Vector2(0f, -1.5f), detectableObjects));
 		AddVectorObs(rayPer.Perceive(rayDistance, (Vector2)transform.position + new Vector2(.25f, 0f), Vector2.right + new Vector2(0f, -1f), detectableObjects));
@@ -45,39 +45,41 @@ public class BirdAgent : Agent
 		AddVectorObs(rayPer.Perceive(rayDistance, (Vector2)transform.position + new Vector2(.25f, 0f), Vector2.right + new Vector2(0f, .5f), detectableObjects));
 		AddVectorObs(rayPer.Perceive(rayDistance, (Vector2)transform.position + new Vector2(.25f, 0f), Vector2.right + new Vector2(0f, 1f), detectableObjects));
 		AddVectorObs(rayPer.Perceive(rayDistance, (Vector2)transform.position + new Vector2(.25f, 0f), Vector2.right + new Vector2(0f, 1.5f), detectableObjects));
-		//AddVectorObs(rayPer.Perceive(rayDistance, (Vector2)transform.position, Vector2.up, detectableObjects));
-		//AddVectorObs(rayPer.Perceive(rayDistance, (Vector2)transform.position, Vector2.down, detectableObjects));
-		//AddVectorObs(rayPer.Perceive2(rayDistance, (Vector2)transform.position + new Vector2(.5f, 0f), Vector2.right + new Vector2(0f, -1f), detectableObjects));
-		//AddVectorObs(rayPer.Perceive2(rayDistance, (Vector2)transform.position + new Vector2(.5f, 0f), Vector2.right + new Vector2(0f, 0f), detectableObjects));
-		//AddVectorObs(rayPer.Perceive2(rayDistance, (Vector2)transform.position + new Vector2(.5f, 0f), Vector2.right + new Vector2(0f, 1f), detectableObjects));
-		//AddVectorObs(rb.velocity.y);
-		AddVectorObs(transform.position.y);
+		AddVectorObs(rayPer.Perceive(rayDistance, (Vector2)transform.position + new Vector2(.25f, 0f), Vector2.up, upDownObjects));
+		AddVectorObs(rayPer.Perceive(rayDistance, (Vector2)transform.position + new Vector2(.25f, 0f), Vector2.down, upDownObjects));
+		//Vector2 normalizedVelocity = rb.velocity.normalized;
+		AddVectorObs(rb.velocity.y / 10f);
+		//Vector2 normalizedPosition = transform.position.normalized;
+		AddVectorObs((Vector2)transform.localPosition);
 
 		goalObjects = academy.GetGoalObjects();
-		if(goalObjects != null)
+		/* if(goalObjects != null)
 		{
 			nearestGoalObject = GetNearestGoalObject(goalObjects);
-			//Debug.Log("Nearest Goal Object: " + nearestGoalObject.name + " + position: " + nearestGoalObject.transform.position);
-			float distance = Vector2.Distance(nearestGoalObject.transform.position, transform.position);
-			//Debug.Log("Distance: " + distance);
-			//AddVectorObs(distance);
-
-			AddVectorObs(transform.position.x - nearestGoalObject.transform.position.x);
-			AddVectorObs(transform.position.y - nearestGoalObject.transform.position.y);
+			AddVectorObs((Vector2)nearestGoalObject.transform.position.normalized);
+			//AddVectorObs(nearestGoalObject.transform.position.x - transform.position.x);
+			//AddVectorObs(nearestGoalObject.transform.position.y - transform.position.y);
+			//Vector2 normalizedGoalObjectPosition = nearestGoalObject.transform.position.normalized;
 			//AddVectorObs(nearestGoalObject.transform.position.y);
+			//AddVectorObs(nearestGoalObject.transform.position.x);
 
-			Monitor.Log("V2Distance", distance.ToString("n6"));
-			Monitor.Log("distance X", (transform.position.x - nearestGoalObject.transform.position.x).ToString("n6"));
-			Monitor.Log("distance Y", (transform.position.y - nearestGoalObject.transform.position.y).ToString("n6"));
-
+			Monitor.Log("Nearest goal obj", nearestGoalObject.transform.position.normalized.ToString("n6"));
+			//Monitor.Log("distance Y", (nearestGoalObject.transform.position.y - transform.position.y).ToString("n6"));
+			//Monitor.Log("Goal Pos X", nearestGoalObject.transform.localPosition.x.ToString("n6"));
+			//Monitor.Log("Goal Pos Y", nearestGoalObject.transform.localPosition.y.ToString("n6"));
+			Monitor.Log("Inverse Vel", transform.InverseTransformDirection(rb.velocity).ToString());
 		}
 		else
 		{
-			AddVectorObs(0f);
-			AddVectorObs(0f);
+			AddVectorObs(Vector2.zero);
 			//AddVectorObs(0f);
-		}
+			//AddVectorObs(0f);
+			//AddVectorObs(0f);
+		} */
 
+		Monitor.Log("Vel Y", (rb.velocity.y / 10f).ToString("n6"));
+		Monitor.Log("Pos Norm", transform.localPosition.ToString("n6"));
+		//Monitor.Log("Local Pos Y", transform.localPosition.y.ToString("n6"));
 	}
 
 	public override void AgentAction(float[] vectorAction, string textAction)
@@ -90,9 +92,21 @@ public class BirdAgent : Agent
 			anim.SetTrigger("Flap");
 		}
 
-		//AddReward(.05f);
-		AddReward(-Mathf.Abs(transform.position.x - nearestGoalObject.transform.position.x) * Mathf.Abs(transform.position.y - nearestGoalObject.transform.position.y) * .01f);
-		Monitor.Log("Current Reward", (-Mathf.Abs(transform.position.x - nearestGoalObject.transform.position.x) * Mathf.Abs(transform.position.y - nearestGoalObject.transform.position.y) * .01f).ToString("n6"));
+		AddReward(.01f);
+
+		/* Vector2 forward = transform.TransformDirection(Vector2.right);
+		Vector2 toOther = nearestGoalObject.transform.position - transform.position;
+		if(Vector2.Dot(forward, toOther) > 0){
+			float reward = Mathf.Abs((transform.position.x - nearestGoalObject.transform.position.x) * (transform.position.y - nearestGoalObject.transform.position.y)) * .01f;
+			//Debug.Log("nearestGoalObject is in front of agent, adding reward of"
+				//+ reward);
+			AddReward(reward);
+			Monitor.Log("Reward", reward.ToString("n6"));
+		}
+		else
+		{
+			Debug.Log("nearestGoalObject is behind agent");
+		} */
 	}
 
 	private GoalObject GetNearestGoalObject(GoalObject[] goalObjs)
@@ -111,20 +125,10 @@ public class BirdAgent : Agent
 
 	private void OnCollisionEnter2D()
 	{
-		//isDead = true;
 		Debug.Log("collided");
 		//anim.SetTrigger("Die");
-		Done();
 		SetReward(-1f);
+		Done();
 	}
 
-	/*private void OnTriggerEnter2D(Collider2D collision)
-	{
-		if (collision.CompareTag("Obstacle"))
-		{
-			Debug.Log("Hit ceiling");
-			AddReward(-.5f);
-			Done();
-		}
-	} */
 }

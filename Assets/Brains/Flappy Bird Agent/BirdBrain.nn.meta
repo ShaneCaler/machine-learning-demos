@@ -1,8 +1,8 @@
 fileFormatVersion: 2
-guid: 86208e2efb09bdb46bb752a2e5b30b77
+guid: 08be47075e3d50c42b9045714145bce7
 ScriptedImporter:
   fileIDToRecycleName:
-    11400000: Assets/BirdBrainV8.nn
+    11400000: Assets/Brains/BirdBrain.nn
   externalObjects: {}
   userData: 
   assetBundleName: 
